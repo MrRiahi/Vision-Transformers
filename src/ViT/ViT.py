@@ -11,7 +11,7 @@ class GeneratePatches(Layer):
 
     def call(self, inputs, **kwargs):
         pass
-    
+
 
 class ViT:
     """
