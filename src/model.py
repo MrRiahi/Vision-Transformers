@@ -1,8 +1,9 @@
 from tensorflow.keras.losses import CategoricalCrossentropy
 from tensorflow.keras.optimizers import SGD, RMSprop, Adam
 import tensorflow as tf
+from math import prod
 
-from src.ViT import ViT
+from src.ViT.ViT import ViT
 
 from src.config import Config as Cfg
 
@@ -16,8 +17,14 @@ def get_model(classes_numbers):
 
     if Cfg.MODEL_TYPE == 'ViT':
         # Build model
-        vit = ViT(classes=classes_numbers)
-        model = vit()
+        input_shape = Cfg.VIT_SHAPE
+        patch = Cfg.VIT_PATCH
+        d_model = patch * patch * 3
+        position = (input_shape[0] * input_shape[1]) // (patch ** 2)
+
+        model = ViT(input_shape=Cfg.VIT_SHAPE,
+                    classes=classes_numbers, patch=patch,
+                    d_model=d_model, n_positions=position)()
 
         # Compile model
         optimizer = Adam(learning_rate=0.1)
@@ -27,7 +34,7 @@ def get_model(classes_numbers):
     else:
         raise Exception('Invalid model type!')
 
-    return model, input_size
+    return model, input_shape
 
 
 def load_model(model_path):
