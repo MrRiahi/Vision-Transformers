@@ -1,6 +1,10 @@
 
 class Config:
 
+    VIT_SHAPE = (224, 224)
+
+    VIT_PATCH = 32
+
     # 'ViT'
     MODEL_TYPE = 'ViT'
 
