@@ -1,5 +1,6 @@
 from tensorflow.keras.layers import Layer, Input, Dense
 from tensorflow.keras.models import Model
+from tensorflow.keras import Model
 import tensorflow as tf
 import numpy as np
 
@@ -43,7 +44,6 @@ class PositionalEncoding(Layer):
         super(PositionalEncoding, self).__init__()
         self.d_model = d_model
         self.n_positions = n_positions
-        self.positional_encoding = np.zeros(shape=(self.n_positions, self.d_model))
 
     def __get_angles(self, i, positions):
         """
@@ -63,18 +63,19 @@ class PositionalEncoding(Layer):
         :return:
         """
 
+        positional_encoding = np.zeros(shape=(self.n_positions, self.d_model))
         positions = np.arange(self.n_positions)[:, np.newaxis]
         i = np.arange(self.d_model)[np.newaxis, :]
 
         angles = self.__get_angles(i=i, positions=positions)
 
-        self.positional_encoding[:, 0::2] = np.sin(angles[:, 0::2])
-        self.positional_encoding[:, 1::2] = np.cos(angles[:, 1::2])
+        positional_encoding[:, 0::2] = np.sin(angles[:, 0::2])
+        positional_encoding[:, 1::2] = np.cos(angles[:, 1::2])
 
         # self.positional_encoding = self.positional_encoding[np.newaxis, ...]
-        self.positional_encoding = tf.cast(self.positional_encoding, dtype=tf.float32)
+        positional_encoding = tf.cast(positional_encoding, dtype=tf.float32)
 
-        X = self.positional_encoding + X
+        X = positional_encoding + X
 
         return X
 
