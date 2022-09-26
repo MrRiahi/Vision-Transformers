@@ -100,10 +100,11 @@ def get_test_dataset_with_image_data_gen(directory, classes, image_size, batch_s
     return test_dataset
 
 
-def get_train_dataset(input_shape):
+def get_train_dataset(input_shape, color_mode='rgb'):
     """
     Load train dataset.
     :param input_shape: model input shape
+    :param color_mode: color mode. rgb or gray
     :return:
     """
 
@@ -113,7 +114,7 @@ def get_train_dataset(input_shape):
         image_size=input_shape,
         batch_size=Cfg.BATCH_SIZE,
         class_mode='categorical',
-        color_mode='rgb',
+        color_mode=color_mode,
         shuffle=True,
         seed=0)
 
