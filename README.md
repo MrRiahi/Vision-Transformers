@@ -1,5 +1,4 @@
 # Vision Transformers
-Implementation of the SOTA vision transformers
 The SOTA vision transformers are implemented in this repository from scratch in Tensorflow. The implemented models are:
 * [ViT](https://arxiv.org/pdf/2010.11929.pdf)
 
