@@ -19,17 +19,23 @@ def get_model(classes_numbers):
         # Build model
         input_shape = Cfg.VIT_SHAPE
         patch = Cfg.VIT_PATCH
-        d_model = patch * patch * 3
-        position = (input_shape[0] * input_shape[1]) // (patch ** 2)
+        d_model = 1024
+        d_mlp = 128
+        n_encoder_layers = 4
+        position = (input_shape[0] * input_shape[1]) // (patch ** 2) + 1
 
         model = ViT(input_shape=Cfg.VIT_SHAPE,
                     classes=classes_numbers, patch=patch,
-                    d_model=d_model, n_positions=position)()
+                    d_model=d_model, n_positions=position,
+                    d_mlp=d_mlp, n_layers=n_encoder_layers)
 
         # Compile model
-        optimizer = Adam(learning_rate=0.1)
+        optimizer = Adam(learning_rate=0.01)
 
         model.compile(loss=CategoricalCrossentropy(), optimizer=optimizer, metrics=['accuracy'])
+
+        # model.compile(loss=CategoricalCrossentropy(), optimizer=optimizer, metrics=['accuracy'],
+        #               run_eagerly=True)
 
     else:
         raise Exception('Invalid model type!')
