@@ -14,14 +14,13 @@ class GeneratePatches(Layer):
         super(GeneratePatches, self).__init__()
         self.patch = patch
 
-    def call(self, images):
+    def call(self, X):
         """
         Generate the images patch and flatten them
-        :param images: batch of images
+        :param X: batch of images
         :return:
         """
-
-        images_patches = tf.image.extract_patches(images=images,
+        images_patches = tf.image.extract_patches(images=X,
                                                   sizes=[1, self.patch, self.patch, 1],
                                                   strides=[1, self.patch, self.patch, 1],
                                                   rates=[1, 1, 1, 1],
@@ -146,7 +145,7 @@ class ViT(Model):
         X = MultiHeadAttention(num_heads=3, key_dim=self.d_model)(X, X, X)
 
         # Dropout layer
-        X = Dropout(rate=0.1)(X, training=training)
+        X = Dropout(rate=0.2)(X, training=training)
 
         # Residual layer
         X_res = X_input + X
@@ -170,9 +169,9 @@ class ViT(Model):
         """
 
         X = LayerNormalization(epsilon=1e-6)(X_class)
-        X = Dense(units=self.d_mlp)(X)
-        X = gelu(X)
-        X = Dropout(rate=0.1)(X)
+        X = Dense(units=self.d_mlp, activation='relu')(X)
+        # X = gelu(X)
+        X = Dropout(rate=0.2)(X)
         X_output = Dense(units=self.classes, activation='softmax')(X)
 
         return X_output
