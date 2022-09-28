@@ -12,7 +12,7 @@ class Config:
 
     # Train config
     BUFFER_SIZE = 500
-    BATCH_SIZE = 32
+    BATCH_SIZE = 64
     # Each model trains for 300 epochs
     EPOCHS = 100
 
