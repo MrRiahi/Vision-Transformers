@@ -26,10 +26,12 @@ class GeneratePatches(Layer):
                                                   rates=[1, 1, 1, 1],
                                                   padding='VALID')
 
-        patch_dimension = images_patches.shape[-1]
-        N = images_patches.shape[1] * images_patches.shape[2]
+        # patch_dimension = images_patches.shape[-1]
+        patch_dimensions = tf.shape(images_patches)
+        # N = images_patches.shape[1] * images_patches.shape[2]
+        N = patch_dimensions[1] * patch_dimensions[2]
 
-        patches = tf.reshape(images_patches, [-1, N, patch_dimension])
+        patches = tf.reshape(images_patches, [-1, N, patch_dimensions[-1]])
 
         return patches
 
@@ -140,6 +142,8 @@ class ViT(Model):
 
         # Layer normalization
         X = LayerNormalization(epsilon=1e-6)(X_input)
+        print(f'X shape is {tf.shape(X)}')
+        print(f'X shape is {X.shape}')
 
         # Multi head attentions
         X = MultiHeadAttention(num_heads=3, key_dim=self.d_model)(X, X, X)
