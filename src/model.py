@@ -35,7 +35,7 @@ def get_model(classes_numbers):
         # model.compile(loss=CategoricalCrossentropy(), optimizer=optimizer, metrics=['accuracy'])
 
         model.compile(loss=CategoricalCrossentropy(), optimizer=optimizer, metrics=['accuracy'],
-                      run_eagerly=True)
+                      run_eagerly=False)
 
     else:
         raise Exception('Invalid model type!')
